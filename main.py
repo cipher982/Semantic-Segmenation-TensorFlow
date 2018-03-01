@@ -160,8 +160,8 @@ def run():
         correct_label = tf.placeholder(tf.int32)
         learning_rate = tf.placeholder(tf.float32)
 		
-        epochs=3
-        batch_size=7
+        epochs=10
+        batch_size=20
 
         input_image, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
 
