@@ -157,9 +157,11 @@ def run():
         # OPTIONAL: Augment Images for better results
         # https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
 
-        # TODO: Build NN using load_vgg, layers, and optimize function
         correct_label = tf.placeholder(tf.int32)
         learning_rate = tf.placeholder(tf.float32)
+		
+        epochs=3
+        batch_size=7
 
         input_image, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
 
@@ -173,8 +175,6 @@ def run():
         train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_image,
                  correct_label, keep_prob, learning_rate)
 
-        for i in tf.get_default_graph().get_operations():
-            print(i.name)
 
         exit()
 
