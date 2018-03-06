@@ -102,3 +102,12 @@ ENV/
 
 RUNS/
 *.zip
+
+data_road/
+vgg/
+gtFine_trainvaltest/
+
+vgg16.npy
+
+data/
+.DS_STORE
