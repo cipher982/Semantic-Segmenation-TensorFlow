@@ -95,6 +95,12 @@ def gen_batch_function(data_folder, image_shape):
                 gt_images.append(gt_image)
 
             yield np.array(images), np.array(gt_images)
+
+        if len(images) == 0:
+            raise RuntimeError('No images found in ' + image_paths)
+        if len(gt_images) == 0:
+            raise RuntimeError('No image labels found in ' + label_paths)
+
     return get_batches_fn
 
 def gen_citi_batch_function(data_folder, image_shape):
@@ -123,6 +129,13 @@ def gen_citi_batch_function(data_folder, image_shape):
                 gt_images.append(gt_image)
 
             yield np.array(images), np.array(gt_images)
+
+
+    if len(images) == 0:
+        raise RuntimeError('No images found in ' + image_paths)
+    if len(gt_images) == 0:
+        raise RuntimeError('No image labels found in ' + label_paths)
+
     return get_batches_fn
 
 

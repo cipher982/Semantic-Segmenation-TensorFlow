@@ -1,3 +1,9 @@
+#-------------------------------------------------------------------------------
+# Author: David Rose <D>
+# Date:   15.06.2017
+#-------------------------------------------------------------------------------
+
+
 import os.path
 import tensorflow as tf
 import helper
@@ -150,7 +156,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
                 format(epochs, keep_prob, learning_rate))
         print("Loss: {0:.4f} at Epoch {1}/{2} in {3:.2f} seconds, time left: ~{4:.2f} minutes".\
             format(loss, epoch, epochs,elapsed_time, time_left))
-        
+
 
 tests.test_train_nn(train_nn)
 
@@ -165,10 +171,6 @@ def run():
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(data_dir)
 
-    # OPTIONAL: Train and Inference on the cityscapes dataset instead of the Kitti dataset.
-    # You'll need a GPU with at least 10 teraFLOPS to train on.
-    #  https://www.cityscapes-dataset.com/
-
     with tf.Session() as sess:
         # Path to vgg model
         vgg_path = os.path.join(data_dir, 'vgg')
@@ -176,11 +178,11 @@ def run():
         get_batches_fn = helper.gen_citi_batch_function(\
             os.path.join(data_dir, r'cityscapes\leftImg8bit'), image_shape)
 
-        # OPTIONAL: Augment Images for better results
+        # TODO: Augment Images for better results
 
         correct_label = tf.placeholder(tf.int32)
         learning_rate = tf.placeholder(tf.float32)
-		
+
         epochs=40
         batch_size=15
 
