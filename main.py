@@ -147,7 +147,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
         if epoch == 0:
             print("Training. . .")
             print("Epochs:{0} Dropout:{1} Learning Rate:{2}".\
-                format(epochs, keep_prob, learning_rate)
+                format(epochs, keep_prob, learning_rate))
         print("Loss: {0:.4f} at Epoch {1}/{2} in {3:.2f} seconds, time left: ~{4:.2f} minutes".\
             format(loss, epoch, epochs,elapsed_time, time_left))
         
