@@ -99,9 +99,9 @@ def gen_batch_function(data_folder, image_shape):
 
 def gen_citi_batch_function(data_folder, image_shape):
     def get_batches_fn(batch_size):
-        image_paths = glob(os.path.join(data_folder, 'train', '*.png'))
+        image_paths = glob(os.path.join(data_folder, 'leftImg8bit', '*.png'))
         label_paths = {
-            re.sub(r'_(lane|road)_', '_', os.path.basename(path)): path
+            #re.sub(r'_(lane|road)_', '_', os.path.basename(path)): path
             for path in glob(os.path.join(data_folder, 'gtFine', '*color.png'))}
         background_color = np.array([255, 0, 0])
 

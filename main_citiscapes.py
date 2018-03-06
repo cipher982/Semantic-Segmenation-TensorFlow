@@ -173,7 +173,8 @@ def run():
         # Path to vgg model
         vgg_path = os.path.join(data_dir, 'vgg')
         # Create function to get batches
-        get_batches_fn = helper.gen_batch_function(os.path.join(data_dir, r'cityscapes\leftImg8bit'), image_shape)
+        get_batches_fn = helper.gen_citi_batch_function(\
+            os.path.join(data_dir, r'cityscapes\leftImg8bit'), image_shape)
 
         # OPTIONAL: Augment Images for better results
 
