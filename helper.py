@@ -76,6 +76,8 @@ def gen_batch_function(data_folder, image_shape):
             re.sub(r'_(lane|road)_', '_', os.path.basename(path)): path
             for path in glob(os.path.join(data_folder, 'gt_image_2', '*_road_*.png'))}
         background_color = np.array([255, 0, 0])
+        for item in label_paths:
+            print(item)
 
         random.shuffle(image_paths)
         for batch_i in range(0, len(image_paths), batch_size):
@@ -83,12 +85,8 @@ def gen_batch_function(data_folder, image_shape):
             gt_images = []
             for image_file in image_paths[batch_i:batch_i+batch_size]:
                 gt_image_file = label_paths[os.path.basename(image_file)]
-                print("img:"+image_file)
-                print("gtimgf:"+gt_image_file)
-
                 image    = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)
                 gt_image = scipy.misc.imresize(scipy.misc.imread(gt_image_file), image_shape)
-
                 gt_bg    = np.all(gt_image == background_color, axis=2)
                 gt_bg    = gt_bg.reshape(*gt_bg.shape, 1)
                 gt_image = np.concatenate((gt_bg, np.invert(gt_bg)), axis=2)
@@ -108,9 +106,12 @@ def gen_batch_function(data_folder, image_shape):
 def gen_citi_batch_function(data_folder, image_shape):
     def get_batches_fn(batch_size):
         image_paths = glob(os.path.join(data_folder, 'leftImg8bit','train','aachen','*.png'))
-        label_paths = {os.path.basename(path): path \
-            for path in glob(os.path.join(data_folder, 'gtFine','train','aachen','*color.png'))}
-        print("image_paths:",image_paths)
+        #image_paths = {re.sub(r'_leftImg8bit', '', )}
+        #image_paths = 
+        label_paths = glob(os.path.join(data_folder, 'gtFine','train','aachen','*.png'))
+
+        print("image_paths:",image_paths[0])
+        print("label_paths:",label_paths[0])
 
         background_color = np.array([255, 0, 0])
 
@@ -119,14 +120,18 @@ def gen_citi_batch_function(data_folder, image_shape):
             images = []
             gt_images = []
             for image_file in image_paths[batch_i:batch_i+batch_size]:
-                gt_image_file = label_paths[os.path.basename(image_file)]
+                label_file = re.sub(r'_leftImg8bit', '_gtFine_color', image_file)
+                label_file = re.sub(r'leftImg8bit', 'gtFine', label_file)
+                print("img path:{0} lab path:{1}".format(image_file,label_file))
+                gt_image_file = label_file
+                print("gt:" + gt_image_file)
 
                 image = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)
                 gt_image = scipy.misc.imresize(scipy.misc.imread(gt_image_file), image_shape)
-
-                gt_bg = np.all(gt_image == background_color, axis=2)
-                gt_bg = gt_bg.reshape(*gt_bg.shape, 1)
-                gt_image = np.concatenate((gt_bg, np.invert(gt_bg)), axis=2)
+                print(np.shape(gt_image))
+                #gt_bg = np.all(gt_image == background_color, axis=2)
+                #gt_bg = gt_bg.reshape(*gt_bg.shape, 1)
+                #gt_image = np.concatenate((gt_bg, np.invert(gt_bg)), axis=2)
 
                 images.append(image)
                 gt_images.append(gt_image)
