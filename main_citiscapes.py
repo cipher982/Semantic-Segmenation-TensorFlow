@@ -163,9 +163,9 @@ tests.test_train_nn(train_nn)
 
 def run():
     num_classes = 30
-    image_shape = (160, 576)
-    data_dir = r'D:\data'
-    runs_dir = r'D:\runs2'
+    image_shape = (160, 576) # uses matrix dimensions, reverse of usual images
+    data_dir = 'D:\data'
+    runs_dir = 'D:\\runs2'
     #tests.test_for_kitti_dataset(data_dir)
 
     # Download pretrained vgg model
@@ -176,14 +176,14 @@ def run():
         vgg_path = os.path.join(data_dir, 'vgg')
         # Create function to get batches
         get_batches_fn = helper.gen_citi_batch_function(\
-            os.path.join(data_dir, r'cityscapes\leftImg8bit'), image_shape)
+            os.path.join(data_dir, 'cityscapes'), image_shape)
 
         # TODO: Augment Images for better results
 
         correct_label = tf.placeholder(tf.int32)
         learning_rate = tf.placeholder(tf.float32)
 
-        epochs=40
+        epochs=2
         batch_size=15
 
         input_image, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)

@@ -83,12 +83,14 @@ def gen_batch_function(data_folder, image_shape):
             gt_images = []
             for image_file in image_paths[batch_i:batch_i+batch_size]:
                 gt_image_file = label_paths[os.path.basename(image_file)]
+                print("img:"+image_file)
+                print("gtimgf:"+gt_image_file)
 
-                image = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)
+                image    = scipy.misc.imresize(scipy.misc.imread(image_file), image_shape)
                 gt_image = scipy.misc.imresize(scipy.misc.imread(gt_image_file), image_shape)
 
-                gt_bg = np.all(gt_image == background_color, axis=2)
-                gt_bg = gt_bg.reshape(*gt_bg.shape, 1)
+                gt_bg    = np.all(gt_image == background_color, axis=2)
+                gt_bg    = gt_bg.reshape(*gt_bg.shape, 1)
                 gt_image = np.concatenate((gt_bg, np.invert(gt_bg)), axis=2)
 
                 images.append(image)
@@ -105,10 +107,11 @@ def gen_batch_function(data_folder, image_shape):
 
 def gen_citi_batch_function(data_folder, image_shape):
     def get_batches_fn(batch_size):
-        image_paths = glob(os.path.join(data_folder, 'leftImg8bit', '*.png'))
-        label_paths = {
-            #re.sub(r'_(lane|road)_', '_', os.path.basename(path)): path
-            for path in glob(os.path.join(data_folder, 'gtFine', '*color.png'))}
+        image_paths = glob(os.path.join(data_folder, 'leftImg8bit','train','aachen','*.png'))
+        label_paths = {os.path.basename(path): path \
+            for path in glob(os.path.join(data_folder, 'gtFine','train','aachen','*color.png'))}
+        print("image_paths:",image_paths)
+
         background_color = np.array([255, 0, 0])
 
         random.shuffle(image_paths)
@@ -129,12 +132,6 @@ def gen_citi_batch_function(data_folder, image_shape):
                 gt_images.append(gt_image)
 
             yield np.array(images), np.array(gt_images)
-
-
-    if len(images) == 0:
-        raise RuntimeError('No images found in ' + image_paths)
-    if len(gt_images) == 0:
-        raise RuntimeError('No image labels found in ' + label_paths)
 
     return get_batches_fn
 
